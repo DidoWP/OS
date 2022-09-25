@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdint.h>
+#include <unistd.h>
+#include <err.h>
+#include <string.h>
+
+int main (int argc, char* argv[]) {
+	if (argc != 3) {
+		errx(1, "Enter 2 arguments\n");
+	}
+
+	int N = argv[1][0] - '0'; //atoi(argv[1]);
+	int D = argv[2][0] - '0'; //atoi(argv[2]);
+	const char di[5] = "DING ";
+	const char don[5] = "DONG\n";
+
+	int pw[2], cw[2];
+	int par = pipe(pw);
+	int cil = pipe(cw);
+
+	int pid = fork();
+	if (pid == -1) {
+		err(3, "Could not fork procces\n");
+	}
+	if (par == -1 || cil == -1) {
+		err(2, "Pipe error\n");
+	}
+	
+	char* ur;
+	char* mur;
+	for(int i=0; i<N; i++) {
+  		if (pid == 0) {
+			close(cw[0]);
+			close(pw[1]);
+
+			read(pw[0], &ur, 3);
+			write(1, &don, 5);
+			write(cw[1], "mur", 3);
+		}
+		else if (pid > 0){
+			close(cw[1]);
+			close(pw[0]);
+			
+			write(1, &di, 5);
+			write(pw[1], "ur", 3);
+			read(cw[0], &mur, 3);
+			sleep(D);
+		}	
+	}
+	exit(0);
+}
+

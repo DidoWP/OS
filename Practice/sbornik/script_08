@@ -1,0 +1,5 @@
+#!/bin/bash
+
+egrep $(cat /etc/passwd | sort -t':' -k3,3 -n | head -201 | tail -1 | cut -d':' -f4) /etc/passwd | cut -d':' -f5,6 | tr -s ,
+
+exit 0

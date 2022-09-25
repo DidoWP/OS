@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]
+then exit 1
+fi
+
+dir=$(find ~ -type d -name $1)
+
+if test -z $dir
+then exit 2
+fi
+
+echo $(find $dir -xtype l)
+
+exit 0

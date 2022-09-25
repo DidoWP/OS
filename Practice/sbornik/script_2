@@ -1,0 +1,7 @@
+#!/bin/bash
+
+user=$(whoami)
+
+find / -user "$user" -print 2>/dev/null | wc -l
+
+exit 0

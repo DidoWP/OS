@@ -1,0 +1,1 @@
+echo tiranuzavur reks > dinosaur.txt

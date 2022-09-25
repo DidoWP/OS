@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "Броят търсени редове е $(egrep [2468] text.txt | egrep -v [a-z] | wc -l)"
+
+exit 0

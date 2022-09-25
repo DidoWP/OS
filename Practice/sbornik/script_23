@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#if [[ $user != "root ]]
+#then exit 1
+#fi
+
+awk -F':' '{print $1,$6}' /etc/passwd
+
+while read u h; do
+	if [! -d $h]; then
+		continue #echo "pesho ..." >&2   exit 1
+	fi
+
+	find $h -type f -printf "$u %p%T@\n" 
+done | sort -rn -k 3 | head -n 1 \ | awk '{print $1,$2}'
+
+exit 0

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]
+then echo "wrong number of args"
+        exit
+fi
+
+top_3_sites=$(cat "$1" | cut -d " " -f 2 | sort | uniq -c | sed 's/^\s*//' | sort -rnk 1 | head -n 3 | cut -d " " -f 2)
+
+while read line
+do  
+	matches=$(cat "$1" | grep "$line")
+
+    http_2_count=$(echo "$matches" | egrep "HTTP/2\.0" | wc -l)
+	
+	non_http_2_count=$(( $(echo "$matches" | wc -l) - $http_2_count))
+	
+	echo "$line HTTP/2.0: $http_2_count non-HTTP/2.0: $non_http_2_count"
+	
+	biggerThan302=$(echo "$matches" | awk -F " " '{if($9 > 302){print $0}}')
+	
+	top_5_clients=$(echo "$biggerThan302" | cut -d " " -f 1 | sort | uniq -c | sort -rnk 1 | head -n 5)
+		
+	echo "$top_5_clients"
+
+done <<< "$top_3_sites"

@@ -1,0 +1,5 @@
+Maximum Physical Interfaces,VLANs,Inside Hosts,Failover,VPN-3DES-AES,*Total VPN Peers,VLAN Trunk Ports,SerialNumber,Running ActivationKey,
+
+4,16,Unlimited,Active/Active,Disabled,16,4,PIX5350007,0xd11b3d48,
+
+8,20,Unlimited,Active/Standby,Enabled,25,8,JMX00000000,0e268e0c,

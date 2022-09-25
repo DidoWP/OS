@@ -1,0 +1,37 @@
+#!/bin/bash
+
+[ $# -ne 2 ] && { echo "Two args needed"; exit 1; }
+[ -d $1 ] || { echo "Not a dir 1"; exit 2; }
+[ -d $2 ] || { echo "Not a dir 2"; exit 3; }
+
+[ $(find $2 -maxdepth 0 -type d ! -empty) ] && { echo "not empty dir"; exit 4; } 
+
+temp=$(mktemp)
+find $1 -type f  > $temp
+cat $temp
+while read line
+do
+	dir=$(echo $line | rev | cut -d'/' -f2- | rev )
+	viname=$(echo $line | rev | cut -d'/' -f1 | rev)
+	echo "dir: $dir - name: $viname"
+
+	if [[ $viname == .*.swp ]]; then
+		name=$(echo $viname | cut -d'.' -f2)
+		
+		if [ $(egrep "$dir/$name" $temp | wc -l) -eq 1 ]; then
+			continue
+		fi
+	fi
+	
+
+	if [ $(echo $dir | tr '/' '\n' | wc -l) -gt 1 ]; then
+		newdir=$(echo $dir | tr '/' '\n' | tail +2 | tr '\n' '/')
+		mkdir -p $2/$newdir
+		cp $line $2/$newdir
+	else
+		cp $line $2
+	fi
+
+done < $temp
+
+exit 0 

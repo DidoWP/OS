@@ -1,0 +1,11 @@
+$!/bin/bash
+
+user=$(whoami)
+
+if [[ $user != "root ]]
+then exit 1
+fi
+
+awk -F: '$6 == "" {print $1}' ~/my_passwd
+
+exit 0
